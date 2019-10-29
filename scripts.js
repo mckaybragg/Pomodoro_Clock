@@ -76,6 +76,20 @@ function Clock() {
     //Function to display the time remaining on the timer
     this.displayCurrentTime = function() {
         $('.main-display').text(formatTime(currentTime));
+
+        //Update the class for the progress radial to be either break or session depending on what mode we're in
+        if (mode === "Session" && $('.progress-radial').hasClass('break')) {
+            $('.progress-radial').removeClass('break').addClass('session');
+        } else if (mode === "Break" && $('.progress-radial').hasClass('session')) {
+            $('.progress-radial').removeClass('session').addClass('break');
+        }
+
+        //Set up the step class for the radial
+        $('.progress-radial').attr('class', function(index, currentValue) {
+            return currentValue.replace(/(^|\s)step-\S+/g, " step-" + (100 - parseInt((currentTime / startTime) * 100)));
+        })
+
+        console.log($('.progress-radial').attr('class'));
     }
 
     //Function to display the session time
